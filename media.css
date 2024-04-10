@@ -1,0 +1,54 @@
+/* media.css */
+
+/* Media queries for smaller screens */
+@media screen and (max-width: 768px) {
+    body{
+        background-image: linear-gradient(to right,#0d2e5f,#1b61c9,#2695ab,#055160)  ; 
+        background-position: center;
+        background-size: cover
+    }
+    .profile{
+        text-align: center;
+    }
+    .home{
+        flex-direction: column-reverse;
+    }
+    .dev , .com{
+        width:auto;
+    }
+    .list{
+        display: block;
+    }
+    .info p{
+        font-size: 1.5rem;
+    }
+}
+
+/* Media query for even smaller screens */
+@media screen and (max-width: 576px) {
+    body{
+        background-image: linear-gradient(to right,#0d2e5f,#1b61c9,#2695ab,#055160)  ; 
+        background-position: center;
+        background-size: cover;
+    }
+    .profile > img , .pic>img{
+        height: 250px;
+        width: 250px;
+    }
+    .myinfo h2{
+        font-size: 1.3rem;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    body{
+        background-image: linear-gradient(to right,#0d2e5f,#1b61c9,#2695ab,#055160)  ; 
+        background-position: center;
+        background-size: contain;
+
+    }
+}
+
+/* Media queries for even smaller screens */
+
+
