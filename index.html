@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HARSH_HADIYA.EXE // PORTFOLIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+
+/* ══════════════════════════════════════════════════════════
+   SYNTHWAVE NEON TOKENS
+═══════════════════════════════════════════════════════════ */
+:root{
+  /* backgrounds */
+  --bg:    #04000f;
+  --bg2:   #070015;
+  --bg3:   #0c001f;
+  --dim:   #140028;
+
+  /* cyan — primary */
+  --c:     #00f5d4;
+  --cd:    #003d35;
+  --cb:    #88fff0;
+  --cg:    rgba(0,245,212,.10);
+
+  /* magenta — accent */
+  --m:     #ff2d78;
+  --md:    #3d0020;
+  --mb:    #ff80b0;
+
+  /* yellow — highlight */
+  --y:     #ffe000;
+  --yg:    rgba(255,224,0,.08);
+
+  /* green — OK */
+  --ok:    #39ff14;
+  --okd:   rgba(57,255,20,.08);
+
+  /* white / text */
+  --wht:   #e0d4ff;
+  --whtd:  #6a5a8a;
+
+  /* error */
+  --err:   #ff4444;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Share Tech Mono',monospace;
+  background:var(--bg);color:var(--c);
+  overflow-x:hidden;cursor:none;
+}
+a{text-decoration:none;color:inherit}
+
+/* ══════════════════════════════════════════════════════════
+   CRT — scanlines + vignette + flicker
+═══════════════════════════════════════════════════════════ */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9900;pointer-events:none;
+  background:repeating-linear-gradient(
+    0deg,transparent 0,transparent 2px,
+    rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px
+  );
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:9890;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 50%,rgba(4,0,15,.75) 100%);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════════════════ */
+#cur{
+  position:fixed;width:2px;height:18px;
+  background:var(--cb);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 8px var(--c),0 0 20px rgba(0,245,212,.4);
+  animation:blink 1.1s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ══════════════════════════════════════════════════════════
+   BACKGROUND GRID
+═══════════════════════════════════════════════════════════ */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,245,212,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,245,212,.03) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+/* horizon glow */
+.bg-horizon{
+  position:fixed;bottom:0;left:0;right:0;z-index:0;pointer-events:none;
+  height:300px;
+  background:linear-gradient(to top,rgba(255,45,120,.06),transparent);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOOT SCREEN
+═══════════════════════════════════════════════════════════ */
+#boot{
+  position:fixed;inset:0;z-index:9800;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:40px;
+  transition:opacity .7s ease;
+}
+#boot.done{opacity:0;pointer-events:none}
+.boot-inner{max-width:640px;width:100%}
+.boot-line{
+  font-size:clamp(.7rem,1.4vw,.85rem);line-height:2.1;
+  opacity:0;transition:opacity .15s;white-space:pre;
+}
+.boot-line.show{opacity:1}
+.b-dim {color:var(--whtd)}
+.b-c   {color:var(--cb);text-shadow:0 0 6px var(--c)}
+.b-m   {color:var(--mb);text-shadow:0 0 6px var(--m)}
+.b-y   {color:var(--y);text-shadow:0 0 6px var(--y)}
+.b-ok  {color:var(--ok);text-shadow:0 0 6px var(--ok)}
+.b-err {color:var(--err)}
+.boot-bar{letter-spacing:-1px;font-size:.82rem}
+
+/* ══════════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:rgba(4,0,15,.96);
+  border-bottom:1px solid var(--cd);
+  display:flex;align-items:stretch;
+  backdrop-filter:blur(8px);
+}
+.nav-logo{
+  font-family:'VT323',monospace;font-size:1.35rem;letter-spacing:.06em;
+  color:var(--cb);text-shadow:0 0 12px var(--c),0 0 30px rgba(0,245,212,.3);
+  padding:8px 22px;border-right:1px solid var(--cd);
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+}
+.nav-logo span{animation:blink 1.1s step-end infinite;color:var(--m);text-shadow:0 0 8px var(--m)}
+.nav-links{display:flex;list-style:none;margin-left:auto}
+.nav-links li{border-left:1px solid var(--cd)}
+.nav-links a{
+  display:flex;align-items:center;
+  padding:8px 20px;
+  font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--whtd);transition:all .2s;white-space:nowrap;
+}
+.nav-links a:hover{
+  color:var(--cb);background:var(--cg);
+  text-shadow:0 0 8px var(--c);
+}
+
+/* hamburger */
+.ham{
+  display:none;flex-direction:column;gap:4px;
+  padding:10px 16px;cursor:none;background:none;border:none;
+  border-left:1px solid var(--cd);margin-left:auto;align-items:center;justify-content:center;
+}
+.ham span{display:block;width:18px;height:1.5px;background:var(--whtd);transition:.3s}
+.ham.open span:nth-child(1){transform:translateY(5.5px) rotate(45deg);background:var(--c)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg);background:var(--c)}
+
+/* mobile menu */
+.mob{
+  display:none;position:fixed;inset:0;z-index:490;
+  background:rgba(4,0,15,.97);
+  flex-direction:column;align-items:stretch;justify-content:center;
+}
+.mob.open{display:flex}
+.mob a{
+  font-family:'VT323',monospace;font-size:3rem;letter-spacing:.08em;
+  color:var(--whtd);padding:14px 40px;
+  border-bottom:1px solid var(--dim);transition:all .2s;
+  display:flex;align-items:center;gap:10px;
+}
+.mob a:first-child{border-top:1px solid var(--dim)}
+.mob a::before{content:'> ';color:var(--cd);font-size:1.5rem;transition:color .2s}
+.mob a:hover{color:var(--cb);background:var(--cg);text-shadow:0 0 12px var(--c)}
+.mob a:hover::before{color:var(--c)}
+
+/* ══════════════════════════════════════════════════════════
+   TERMINAL WINDOW
+═══════════════════════════════════════════════════════════ */
+.tw{border:1px solid var(--cd);background:var(--bg2);position:relative}
+.tw-bar{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(4,0,15,.9);border-bottom:1px solid var(--cd);
+  padding:6px 14px;
+}
+.tw-dots{display:flex;gap:5px}
+.tw-dot{width:8px;height:8px;border-radius:50%}
+.d-r{background:#ff5f56;box-shadow:0 0 6px #ff5f56}
+.d-y{background:#ffbd2e;box-shadow:0 0 6px #ffbd2e}
+.d-g{background:var(--ok);box-shadow:0 0 6px var(--ok)}
+.tw-title{font-size:.68rem;color:var(--whtd);letter-spacing:.1em;flex:1;text-align:center}
+
+/* featured twin-border */
+.tw-feat{
+  border:1px solid var(--c);
+  box-shadow:
+    0 0 0 3px var(--bg),
+    0 0 0 4px var(--cd),
+    0 0 30px rgba(0,245,212,.12),
+    inset 0 0 30px rgba(0,245,212,.03);
+}
+.tw-mag{
+  border:1px solid var(--m);
+  box-shadow:
+    0 0 0 3px var(--bg),
+    0 0 0 4px var(--md),
+    0 0 30px rgba(255,45,120,.12),
+    inset 0 0 30px rgba(255,45,120,.03);
+}
+
+/* ══════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════ */
+.hero-wrap{padding-top:45px;min-height:100vh;display:flex;flex-direction:column;position:relative;z-index:1}
+
+.hero-status{
+  background:rgba(4,0,15,.9);border-bottom:1px solid var(--cd);
+  display:flex;align-items:center;
+  padding:6px 40px;gap:20px;flex-wrap:wrap;
+  font-size:.68rem;letter-spacing:.1em;color:var(--whtd);
+  backdrop-filter:blur(4px);
+}
+.st-ok::before{
+  content:'';display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--ok);box-shadow:0 0 6px var(--ok);
+  animation:blink 2s step-end infinite;margin-right:6px;
+}
+.st-v{color:var(--ok);text-shadow:0 0 5px var(--ok)}
+.st-c{color:var(--cb);text-shadow:0 0 5px var(--c)}
+.st-m{color:var(--mb);text-shadow:0 0 5px var(--m)}
+.st-sep{color:var(--dim)}
+
+.hero-body{
+  flex:1;padding:44px 40px;
+  max-width:1240px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:start;
+}
+
+/* ASCII art */
+.ascii-art{
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(.38rem,.65vw,.6rem);
+  line-height:1.18;letter-spacing:0;white-space:pre;
+  display:block;overflow:hidden;margin-bottom:22px;
+}
+.asc-c{color:var(--cb);text-shadow:0 0 10px var(--c),0 0 25px rgba(0,245,212,.35)}
+.asc-m{color:var(--mb);text-shadow:0 0 10px var(--m),0 0 25px rgba(255,45,120,.35)}
+
+/* mobile name */
+.mobile-name{
+  display:none;font-family:'VT323',monospace;
+  font-size:3rem;letter-spacing:.04em;line-height:1;
+  margin-bottom:18px;
+}
+.mobile-name .n1{color:var(--cb);text-shadow:0 0 14px var(--c)}
+.mobile-name .n2{color:var(--mb);text-shadow:0 0 14px var(--m)}
+
+/* prompt */
+.pl{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;font-size:.8rem;line-height:1.7;margin-bottom:5px}
+.ps {color:var(--m);text-shadow:0 0 5px var(--m)}
+.pu {color:var(--cb);text-shadow:0 0 4px var(--c)}
+.pp {color:var(--whtd)}
+.pc {color:var(--wht)}
+.po {color:var(--whtd);padding-left:14px;font-size:.78rem}
+.pv {color:var(--c)}
+.pg {color:var(--ok);text-shadow:0 0 4px var(--ok)}
+.pm {color:var(--mb);text-shadow:0 0 4px var(--m)}
+.py {color:var(--y);text-shadow:0 0 4px var(--y)}
+
+.hero-bio{
+  font-size:.8rem;line-height:1.82;color:var(--whtd);
+  padding:12px 0 12px 16px;
+  border-left:2px solid var(--cd);
+  margin:12px 0 20px;
+}
+.hero-bio strong{color:var(--c)}
+.hero-bio .hl-m{color:var(--mb);text-shadow:0 0 4px var(--m)}
+
+/* progress bars */
+.pbar{font-size:.74rem;margin-bottom:7px;color:var(--whtd);white-space:nowrap}
+.pb-c{color:var(--c);letter-spacing:-1px;text-shadow:0 0 5px var(--c)}
+.pb-m{color:var(--m);letter-spacing:-1px;text-shadow:0 0 5px var(--m)}
+.pb-y{color:var(--y);letter-spacing:-1px;text-shadow:0 0 5px var(--y)}
+.pb-ok{color:var(--ok);text-shadow:0 0 4px var(--ok);margin-left:5px}
+.pb-pct{color:var(--whtd);font-size:.68rem}
+.cur-t{animation:blink 1.1s step-end infinite;color:var(--cb);font-weight:bold}
+
+.hero-btns{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+/* hero right */
+.hero-panel{display:flex;flex-direction:column;gap:14px}
+
+.info-table{border-collapse:collapse;width:100%;font-size:.76rem}
+.info-table td{padding:7px 10px;border:1px solid var(--dim);vertical-align:middle}
+.info-table tr:hover td{background:var(--cg)}
+.ik{color:var(--whtd);white-space:nowrap}
+.ik::after{content:' :';color:var(--dim)}
+.iv{color:var(--c)}
+.iv-b{color:var(--cb);text-shadow:0 0 5px var(--c)}
+.iv-g{color:var(--ok);text-shadow:0 0 4px var(--ok)}
+.iv-m{color:var(--mb);text-shadow:0 0 4px var(--m)}
+.iv-y{color:var(--y);text-shadow:0 0 4px var(--y)}
+
+.soc-table{border-collapse:collapse;width:100%;font-size:.74rem}
+.soc-table a{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 12px;color:var(--whtd);
+  border-bottom:1px solid var(--dim);transition:all .2s;
+}
+.soc-table tr:last-child a{border-bottom:none}
+.soc-table a:hover{color:var(--cb);background:var(--cg);text-shadow:0 0 6px var(--c)}
+.soc-arr{margin-left:auto;transition:transform .2s}
+.soc-table a:hover .soc-arr{transform:translateX(3px);color:var(--c)}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION WRAPPERS
+═══════════════════════════════════════════════════════════ */
+.sec-wrap{border-top:1px solid var(--dim);padding:64px 0;position:relative;z-index:1}
+.sec-wrap.alt{background:rgba(7,0,21,.7)}
+.sec-inner{max-width:1200px;margin:0 auto;padding:0 40px}
+.sec-head{margin-bottom:30px}
+.sec-cmd{font-size:.7rem;color:var(--whtd);margin-bottom:8px;letter-spacing:.08em}
+.sec-title{
+  font-family:'VT323',monospace;
+  font-size:clamp(2rem,3.5vw,3rem);letter-spacing:.06em;line-height:1;
+}
+.sec-title.c{color:var(--cb);text-shadow:0 0 14px var(--c),0 0 40px rgba(0,245,212,.2)}
+.sec-title.m{color:var(--mb);text-shadow:0 0 14px var(--m),0 0 40px rgba(255,45,120,.2)}
+.sec-title.y{color:var(--y);text-shadow:0 0 14px var(--y)}
+.sec-rule{font-size:.62rem;color:var(--dim);letter-spacing:.04em;margin-top:6px;overflow:hidden;white-space:nowrap}
+
+/* ══════════════════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════════════════ */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px}
+.sys-table{border-collapse:collapse;width:100%;font-size:.78rem}
+.sys-table tr{border-bottom:1px solid var(--dim)}
+.sys-table tr:last-child{border-bottom:none}
+.sys-table tr:hover td{background:var(--cg)}
+.sys-table td{padding:9px 12px;vertical-align:top}
+.sk{color:var(--whtd);white-space:nowrap;width:140px}
+.sk::after{content:' ........';color:var(--dim)}
+.sv{color:var(--c)}
+.sv-b{color:var(--cb);text-shadow:0 0 4px var(--c)}
+.sv-g{color:var(--ok);text-shadow:0 0 4px var(--ok)}
+.sv-m{color:var(--mb);text-shadow:0 0 4px var(--m)}
+.sv-y{color:var(--y);text-shadow:0 0 4px var(--y)}
+
+.bio-body{padding:20px 24px;font-size:.8rem;line-height:1.85;color:var(--whtd)}
+.bio-body p{margin-bottom:12px}
+.bio-body strong{color:var(--c)}
+
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  margin-top:16px;border:1px solid var(--m);
+  box-shadow:0 0 20px rgba(255,45,120,.1);
+}
+.stat-cell{
+  padding:18px 14px;border:1px solid var(--dim);
+  text-align:center;transition:background .3s;
+  position:relative;overflow:hidden;
+}
+.stat-cell::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.stat-cell:nth-child(1)::before,.stat-cell:nth-child(3)::before{background:var(--c)}
+.stat-cell:nth-child(2)::before,.stat-cell:nth-child(4)::before{background:var(--m)}
+.stat-cell:hover::before{transform:scaleX(1)}
+.stat-cell:hover{background:rgba(0,245,212,.04)}
+.stat-n{font-family:'VT323',monospace;font-size:2.2rem;line-height:1}
+.stat-cell:nth-child(odd) .stat-n{color:var(--cb);text-shadow:0 0 12px var(--c)}
+.stat-cell:nth-child(even) .stat-n{color:var(--mb);text-shadow:0 0 12px var(--m)}
+.stat-l{font-size:.6rem;color:var(--whtd);letter-spacing:.1em;margin-top:4px}
+
+/* ══════════════════════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════════════════════ */
+.skills-table{border-collapse:collapse;width:100%;font-size:.78rem}
+.skills-table th,
+.skills-table td{border:1px solid var(--cd);padding:11px 16px;text-align:left;vertical-align:middle}
+.skills-table thead th{
+  background:rgba(4,0,15,.9);font-family:'VT323',monospace;
+  font-size:1.1rem;letter-spacing:.06em;text-align:center;
+}
+.skills-table thead th:first-child{color:var(--cb);text-shadow:0 0 8px var(--c)}
+.skills-table thead th:last-child{color:var(--mb);text-shadow:0 0 8px var(--m)}
+.skills-table th.cat-col{
+  background:rgba(4,0,15,.8);font-family:'Share Tech Mono',monospace;
+  font-size:.7rem;letter-spacing:.1em;white-space:nowrap;min-width:160px;text-align:left;
+  color:var(--c);
+}
+.cat-col::before{content:'# ';color:var(--cd)}
+.skills-table tr:hover th.cat-col{color:var(--cb);text-shadow:0 0 5px var(--c)}
+.skills-table td{background:var(--bg2);color:var(--whtd)}
+.skills-table tr:hover td{background:var(--cg)}
+.tag{
+  display:inline-block;font-size:.72rem;
+  margin:2px 3px 2px 0;transition:all .2s;
+}
+/* alternate tag colors per row */
+.row-c .tag{color:var(--c)}
+.row-c .tag::before{content:'[';color:var(--cd)}
+.row-c .tag::after{content:']';color:var(--cd)}
+.row-c tr:hover .tag,.skills-table tr.row-c:hover .tag{color:var(--cb);text-shadow:0 0 4px var(--c)}
+
+.row-m .tag{color:var(--mb)}
+.row-m .tag::before{content:'[';color:var(--md)}
+.row-m .tag::after{content:']';color:var(--md)}
+
+.row-y .tag{color:var(--y)}
+.row-y .tag::before{content:'[';color:rgba(255,224,0,.3)}
+.row-y .tag::after{content:']';color:rgba(255,224,0,.3)}
+
+/* general */
+.tag::before{content:'[';color:var(--cd)}
+.tag::after{content:']';color:var(--cd)}
+
+/* ══════════════════════════════════════════════════════════
+   PROJECTS
+═══════════════════════════════════════════════════════════ */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.proj-tw{
+  border:1px solid var(--cd);background:var(--bg2);
+  display:flex;flex-direction:column;
+  transition:border-color .3s,box-shadow .3s;
+}
+.proj-tw:hover{border-color:var(--c);box-shadow:0 0 20px rgba(0,245,212,.1)}
+.proj-tw.span2{grid-column:span 2}
+.proj-tw.feat{
+  border-color:var(--m);
+  box-shadow:0 0 0 3px var(--bg),0 0 0 4px var(--md),0 0 30px rgba(255,45,120,.14);
+}
+.proj-tw.feat:hover{
+  border-color:var(--mb);
+  box-shadow:0 0 0 3px var(--bg),0 0 0 4px var(--md),0 0 40px rgba(255,45,120,.22);
+}
+
+.proj-bar{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(4,0,15,.9);border-bottom:1px solid var(--cd);
+  padding:7px 14px;
+}
+.proj-num{font-size:.62rem;color:var(--whtd);letter-spacing:.12em;white-space:nowrap}
+.proj-name{
+  font-family:'VT323',monospace;font-size:1.25rem;letter-spacing:.06em;flex:1;
+}
+.feat .proj-bar{border-bottom-color:var(--md)}
+.feat .proj-name{color:var(--mb);text-shadow:0 0 8px var(--m)}
+.proj-tw:not(.feat) .proj-name{color:var(--cb);text-shadow:0 0 6px var(--c)}
+
+.proj-badge{
+  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+  padding:2px 9px;border-radius:1px;
+}
+.badge-m{color:var(--mb);border:1px solid var(--m);text-shadow:0 0 6px var(--m);box-shadow:0 0 8px rgba(255,45,120,.15)}
+.badge-c{color:var(--cb);border:1px solid var(--c);text-shadow:0 0 6px var(--c)}
+.badge-y{color:var(--y);border:1px solid var(--y);text-shadow:0 0 6px var(--y)}
+
+.proj-body{padding:18px 20px;flex:1;display:flex;flex-direction:column}
+.proj-desc{
+  font-size:.77rem;line-height:1.72;color:var(--whtd);
+  margin-bottom:14px;flex:1;
+  border-left:2px solid var(--cd);padding-left:12px;
+}
+.proj-stat{font-size:.7rem;margin-bottom:10px;color:var(--whtd)}
+.pbar-fill-c{color:var(--c);letter-spacing:-1px;text-shadow:0 0 4px var(--c)}
+.pbar-fill-m{color:var(--m);letter-spacing:-1px;text-shadow:0 0 4px var(--m)}
+.pbar-ok{color:var(--ok);text-shadow:0 0 4px var(--ok);margin-left:4px}
+.proj-stack-hd{font-size:.62rem;color:var(--dim);letter-spacing:.1em;margin-bottom:5px}
+.proj-stack{margin-bottom:14px}
+.proj-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+
+.plink{
+  font-size:.68rem;letter-spacing:.08em;
+  color:var(--whtd);border:1px solid var(--dim);
+  padding:5px 12px;transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px;cursor:none;
+}
+.plink::before{content:'$';color:var(--dim);font-size:.6rem;transition:color .2s}
+.plink-c:hover{color:var(--cb);border-color:var(--c);background:var(--cg);text-shadow:0 0 5px var(--c)}
+.plink-c:hover::before{color:var(--cd)}
+.plink-m:hover{color:var(--mb);border-color:var(--m);background:rgba(255,45,120,.08);text-shadow:0 0 5px var(--m)}
+.plink-m:hover::before{color:var(--md)}
+
+/* featured grid body */
+.feat-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;flex:1}
+.proj-visual{
+  display:flex;flex-direction:column;gap:6px;justify-content:center;
+  border:1px solid var(--dim);padding:18px;
+  background:rgba(4,0,15,.6);font-size:.72rem;color:var(--whtd);
+}
+.pv-line{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--dim)}
+.pv-line:last-child{border-bottom:none}
+.pv-k{color:var(--whtd)}
+.pv-vc{color:var(--c);text-align:right}
+.pv-vm{color:var(--mb);text-align:right}
+.pv-vg{color:var(--ok);text-shadow:0 0 4px var(--ok);text-align:right}
+.pv-vy{color:var(--y);text-shadow:0 0 4px var(--y);text-align:right}
+
+/* ══════════════════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════════════════ */
+.contact-inner{max-width:700px;margin:0 auto}
+.contact-body{padding:28px}
+.ping-out{font-size:.79rem;line-height:2.1;color:var(--whtd);margin-bottom:24px}
+.ping-sep{font-size:.62rem;color:var(--dim);letter-spacing:.04em;margin:14px 0;overflow:hidden;white-space:nowrap}
+.contact-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ══════════════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════════════ */
+.btn{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.73rem;letter-spacing:.08em;
+  padding:9px 20px;border:1px solid var(--cd);
+  background:transparent;color:var(--c);cursor:none;
+  transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn::before{content:'[';color:var(--cd);margin-right:-3px;transition:color .2s}
+.btn::after {content:']';color:var(--cd);margin-left:-3px;transition:color .2s}
+.btn:hover{background:var(--cg);border-color:var(--c);color:var(--cb);text-shadow:0 0 7px var(--c)}
+.btn:hover::before,.btn:hover::after{color:var(--c)}
+
+.btn-m{border-color:var(--md);color:var(--mb)}
+.btn-m::before,.btn-m::after{color:var(--md)}
+.btn-m:hover{background:rgba(255,45,120,.1);border-color:var(--m);color:var(--mb);text-shadow:0 0 7px var(--m)}
+.btn-m:hover::before,.btn-m:hover::after{color:var(--m)}
+
+.btn-primary{
+  background:rgba(0,245,212,.12);border-color:var(--c);color:var(--cb);
+}
+.btn-primary:hover{
+  background:var(--c);color:#04000f;text-shadow:none;
+  box-shadow:0 0 20px rgba(0,245,212,.4),0 0 40px rgba(0,245,212,.2);
+}
+.btn-primary:hover::before,.btn-primary:hover::after{color:#04000f}
+
+/* ══════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════ */
+footer{
+  border-top:1px solid var(--cd);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  font-size:.68rem;color:var(--whtd);
+  background:rgba(4,0,15,.96);
+  position:relative;z-index:1;
+}
+.foot-p{color:var(--m);text-shadow:0 0 5px var(--m)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{color:var(--whtd);letter-spacing:.08em;transition:color .2s}
+.footer-links a:hover{color:var(--cb);text-shadow:0 0 6px var(--c)}
+
+/* ══════════════════════════════════════════════════════════
+   REVEAL
+═══════════════════════════════════════════════════════════ */
+.rev{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rev.vis{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media(max-width:1200px){
+  .hero-body,.sec-inner{padding-left:28px;padding-right:28px}
+  footer,.hero-status{padding-left:28px;padding-right:28px}
+}
+@media(max-width:1000px){
+  .about-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .ascii-art{font-size:clamp(.3rem,.58vw,.48rem)}
+}
+@media(max-width:860px){
+  .nav-links{display:none}
+  .ham{display:flex}
+  .hero-body{grid-template-columns:1fr;padding:30px 20px}
+  .hero-panel{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ascii-art{display:none}
+  .mobile-name{display:block}
+  .proj-grid{grid-template-columns:1fr}
+  .proj-tw.span2,.proj-tw.feat{grid-column:span 1}
+  .feat-body-grid{grid-template-columns:1fr}
+  .proj-visual{display:none}
+  .sec-inner{padding:0 20px}
+  .sec-wrap{padding:48px 0}
+  footer,.hero-status{padding-left:20px;padding-right:20px}
+}
+@media(max-width:640px){
+  .hero-body{padding:20px 16px}
+  .skills-table,.skills-table tbody,.skills-table tr,.skills-table td{display:block;width:100%}
+  .skills-table thead{display:none}
+  .skills-table tr{border-bottom:1px solid var(--cd)}
+  .skills-table td{border:none;border-left:2px solid var(--dim);padding:7px 10px}
+  .skills-table th.cat-col{
+    display:block;width:100%;background:rgba(4,0,15,.9);
+    border-bottom:1px solid var(--dim);padding:8px 14px;
+  }
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .contact-btns{flex-direction:column}
+  .contact-btns .btn{justify-content:center}
+  .hero-panel{grid-template-columns:1fr}
+}
+@media(max-width:400px){
+  .mobile-name{font-size:2.4rem}
+  nav .nav-logo{font-size:1.1rem;padding:8px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- fixed background effects -->
+<div class="bg-grid"></div>
+<div class="bg-horizon"></div>
+
+<div id="cur"></div>
+
+<!-- ─── BOOT ─────────────────────────────────────────────── -->
+<div id="boot">
+  <div class="boot-inner">
+    <div class="boot-line b-c"  id="b0">HARSH_PORTFOLIO_OS v2.0 // SYNTHWAVE EDITION</div>
+    <div class="boot-line b-dim"id="b1">Copyright (C) 2025 Harsh Hadiya. All rights reserved.</div>
+    <div class="boot-line"      id="b2">&nbsp;</div>
+    <div class="boot-line"      id="b3">[ <span class="b-c">INIT</span> ]  Booting FULL_STACK_RUNTIME .......<span class="b-ok"> OK</span></div>
+    <div class="boot-line"      id="b4">[ <span class="b-c">LOAD</span> ]  Mounting PROJECT_DATABASE ........<span class="b-ok"> OK</span></div>
+    <div class="boot-line"      id="b5">[ <span class="b-m">SYNC</span> ]  Starting AI_MODULES ..............<span class="b-ok"> OK</span></div>
+    <div class="boot-line"      id="b6">[ <span class="b-m">NET</span>  ]  Establishing network links .......<span class="b-ok"> OK</span></div>
+    <div class="boot-line"      id="b7">[ <span class="b-y">SYS</span>  ]  Loading SKILLS_ENGINE ............<span class="b-ok"> OK</span></div>
+    <div class="boot-line"      id="b8">[ <span class="b-y">GFX</span>  ]  Initializing NEON_RENDERER .......<span class="b-ok"> OK</span></div>
+    <div class="boot-line"      id="b9">&nbsp;</div>
+    <div class="boot-line b-c boot-bar" id="b10" style="text-shadow:0 0 6px var(--c)">
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  100%  READY</div>
+  </div>
+</div>
+
+<!-- ─── MOBILE MENU ──────────────────────────────────────── -->
+<div class="mob" id="mob">
+  <a href="#about"    onclick="closeMob()">ABOUT</a>
+  <a href="#skills"   onclick="closeMob()">SKILLS</a>
+  <a href="#projects" onclick="closeMob()">PROJECTS</a>
+  <a href="#contact"  onclick="closeMob()">CONTACT</a>
+</div>
+
+<!-- ─── NAV ─────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">HARSH_HADIYA.EXE<span>█</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+  <button class="ham" id="ham" aria-label="menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────────────── -->
+<div class="hero-wrap">
+
+  <div class="hero-status">
+    <span class="st-ok">STATUS <span class="st-v">ONLINE</span></span>
+    <span class="st-sep">|</span>
+    <span>ROLE <span class="st-c">FULL-STACK-DEV</span></span>
+    <span class="st-sep">|</span>
+    <span>UPTIME <span class="st-v">99.9%</span></span>
+    <span class="st-sep">|</span>
+    <span>HIRE <span class="st-m">OPEN</span></span>
+    <span class="st-sep">|</span>
+    <span>LOC <span class="st-c">INDIA/ST</span></span>
+    <span class="st-sep" style="margin-left:auto">|</span>
+    <span id="clock" style="color:var(--whtd)">--:--:--</span>
+  </div>
+
+  <div class="hero-body">
+    <!-- LEFT -->
+    <div>
+      <!-- Mobile fallback name -->
+      <div class="mobile-name"><span class="n1">HARSH</span><br/><span class="n2">HADIYA</span></div>
+
+      <!-- ASCII block art — two-tone cyan/magenta -->
+<pre class="ascii-art"><span class="asc-c">██╗  ██╗ █████╗ ██████╗ ███████╗██╗  ██╗
+██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║
+███████║███████║██████╔╝███████╗███████║
+██╔══██╗██╔══██║██╔══██╗╚════██║██╔══██║
+██║  ██║██║  ██║██║  ██║███████║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝</span>
+<span class="asc-m">
+██╗  ██╗ █████╗ ██████╗ ██╗██╗   ██╗ █████╗
+██╔══██╗██╔══██╗██╔══██╗██║╚██╗ ██╔╝██╔══██╗
+███████║███████║██║  ██║██║ ╚████╔╝ ███████║
+██╔══██║██╔══██║██║  ██║██║  ╚██╔╝  ██╔══██║
+██║  ██║██║  ██║██████╔╝██║   ██║   ██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝</span></pre>
+
+      <div class="pl">
+        <span class="ps">❯</span>
+        <span class="pu">harsh@portfolio</span><span class="pp">:~$</span>
+        <span class="pc">whoami --verbose</span>
+      </div>
+      <div class="hero-bio">
+        Full-stack developer from <strong>India</strong> building products people actually use —
+        from <strong>AI-powered interview platforms</strong> to
+        <span class="hl-m">chatbot services</span>,
+        <span class="hl-m">face recognition systems</span>, and campus social apps.
+        Equally at home crafting UIs and architecting backends.
+        <span class="cur-t">█</span>
+      </div>
+
+      <div class="pl" style="margin-top:8px">
+        <span class="ps">❯</span><span class="pp">cat</span><span class="pc">metrics.log</span>
+      </div>
+      <div style="margin:10px 0 4px;padding-left:14px">
+        <div class="pbar">AVAILABILITY  <span class="pb-c">▓▓▓▓▓▓▓▓▓▓▓▓</span><span class="pb-ok"> OPEN_TO_HIRE</span></div>
+        <div class="pbar">FRONTEND      <span class="pb-c">▓▓▓▓▓▓▓▓▓▓▓░</span><span class="pb-pct">  96%</span></div>
+        <div class="pbar">BACKEND       <span class="pb-m">▓▓▓▓▓▓▓▓▓▓▓▓</span><span class="pb-pct"> 100%</span></div>
+        <div class="pbar">AI_MODULES    <span class="pb-y">▓▓▓▓▓▓▓▓▓░░░</span><span class="pb-pct">  82%</span></div>
+        <div class="pbar">COFFEE_LEVEL  <span class="pb-m">▓▓▓▓▓▓▓░░░░░</span><span class="pb-pct">  60%</span></div>
+      </div>
+
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">VIEW PROJECTS</a>
+        <a href="#contact"  class="btn btn-m">GET IN TOUCH</a>
+        <a href="https://github.com/Harshhadiya2004" target="_blank" class="btn">GITHUB</a>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="hero-panel">
+      <div class="tw">
+        <div class="tw-bar">
+          <div class="tw-dots"><div class="tw-dot d-r"></div><div class="tw-dot d-y"></div><div class="tw-dot d-g"></div></div>
+          <div class="tw-title">SYSTEM_INFO.conf</div>
+        </div>
+        <table class="info-table">
+          <tr><td class="ik">NAME</td>    <td class="iv-b">HARSH HADIYA</td></tr>
+          <tr><td class="ik">ROLE</td>    <td class="iv">FULL-STACK DEV</td></tr>
+          <tr><td class="ik">LOCATION</td><td class="iv">INDIA / ST</td></tr>
+          <tr><td class="ik">STATUS</td>  <td class="iv-g">● AVAILABLE</td></tr>
+          <tr><td class="ik">PROJECTS</td><td class="iv-b">6+</td></tr>
+          <tr><td class="ik">AI/ML</td>   <td class="iv-m">ENABLED</td></tr>
+          <tr><td class="ik">TYPE</td>    <td class="iv-y">OPEN SOURCE</td></tr>
+          <tr><td class="ik">VERSION</td> <td class="iv">v2025.04</td></tr>
+        </table>
+      </div>
+
+      <div class="tw">
+        <div class="tw-bar">
+          <div class="tw-dots"><div class="tw-dot d-r"></div><div class="tw-dot d-y"></div><div class="tw-dot d-g"></div></div>
+          <div class="tw-title">LINKS.sh</div>
+        </div>
+        <table class="soc-table">
+          <tr><td><a href="https://github.com/Harshhadiya2004" target="_blank">./GITHUB<span class="soc-arr">→</span></a></td></tr>
+          <tr><td><a href="https://in.linkedin.com/in/harsh-hadiya-4a358a270" target="_blank">./LINKEDIN<span class="soc-arr">→</span></a></td></tr>
+          <tr><td><a href="https://leetcode.com/u/22it035/" target="_blank">./LEETCODE<span class="soc-arr">→</span></a></td></tr>
+          <tr><td><a href="mailto:harshhadiya4@gmail.com">./EMAIL<span class="soc-arr">→</span></a></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ABOUT ─────────────────────────────────────────────── -->
+<div class="sec-wrap" id="about">
+  <div class="sec-inner">
+    <div class="sec-head rev">
+      <div class="sec-cmd"><span class="ps">❯</span> cat --verbose ./about/whoami.txt</div>
+      <div class="sec-title c">// ABOUT_USER</div>
+      <div class="sec-rule">──────────────────────────────────────────────────────────────────────────────</div>
+    </div>
+
+    <div class="about-grid rev">
+      <div class="tw">
+        <div class="tw-bar">
+          <div class="tw-dots"><div class="tw-dot d-r"></div><div class="tw-dot d-y"></div><div class="tw-dot d-g"></div></div>
+          <div class="tw-title">whoami --detailed</div>
+        </div>
+        <table class="sys-table">
+          <tr><td class="sk">FULL_NAME</td>  <td class="sv-b">Harsh Hadiya</td></tr>
+          <tr><td class="sk">TYPE</td>        <td class="sv">Full-Stack Developer</td></tr>
+          <tr><td class="sk">LOCATION</td>    <td class="sv">Surat, Gujarat, India</td></tr>
+          <tr><td class="sk">EDUCATION</td>   <td class="sv">IT Engineering</td></tr>
+          <tr><td class="sk">SPECIALITY</td>  <td class="sv">Web + AI/ML Apps</td></tr>
+          <tr><td class="sk">FRONTEND</td>    <td class="sv-g">PROFICIENT</td></tr>
+          <tr><td class="sk">BACKEND</td>     <td class="sv-g">PROFICIENT</td></tr>
+          <tr><td class="sk">AI_ML</td>       <td class="sv-m">ACTIVE</td></tr>
+          <tr><td class="sk">HIRE_STATUS</td> <td class="sv-g">● OPEN</td></tr>
+        </table>
+      </div>
+
+      <div class="tw">
+        <div class="tw-bar">
+          <div class="tw-dots"><div class="tw-dot d-r"></div><div class="tw-dot d-y"></div><div class="tw-dot d-g"></div></div>
+          <div class="tw-title">bio.txt</div>
+        </div>
+        <div class="bio-body">
+          <div class="pl" style="margin-bottom:10px"><span class="ps">❯</span><span class="pp">cat</span><span class="pc">bio.txt</span></div>
+          <p>I'm <strong>Harsh Hadiya</strong>, a developer who builds products at the intersection of <strong>clean engineering</strong> and real user needs.</p>
+          <p>From <strong>AI-powered interview prep platforms</strong> to intelligent chatbot services, face recognition systems, and campus social apps — I ship things that actually work.</p>
+          <p>I care about the whole stack: <span class="tag" style="color:var(--c)">UI/UX</span> <span class="tag" style="color:var(--mb)">APIs</span> <span class="tag" style="color:var(--y)">ML</span> <span class="tag" style="color:var(--c)">Infra</span></p>
+          <div class="pl" style="margin-top:14px"><span class="ps">❯</span><span class="pp">echo</span><span class="pc">"currently: building cool stuff"</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row rev">
+      <div class="stat-cell"><div class="stat-n">6+</div><div class="stat-l">PROJECTS_SHIPPED</div></div>
+      <div class="stat-cell"><div class="stat-n">AI</div><div class="stat-l">ML_INTEGRATION</div></div>
+      <div class="stat-cell"><div class="stat-n">3+</div><div class="stat-l">ACTIVE_STACKS</div></div>
+      <div class="stat-cell"><div class="stat-n">FS</div><div class="stat-l">FULL_STACK_DEV</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SKILLS ───────────────────────────────────────────── -->
+<div class="sec-wrap alt" id="skills">
+  <div class="sec-inner">
+    <div class="sec-head rev">
+      <div class="sec-cmd"><span class="ps">❯</span> SELECT * FROM skills ORDER BY proficiency DESC;</div>
+      <div class="sec-title m">// SKILL_MATRIX</div>
+      <div class="sec-rule">──────────────────────────────────────────────────────────────────────────────</div>
+    </div>
+
+    <div class="tw rev">
+      <div class="tw-bar">
+        <div class="tw-dots"><div class="tw-dot d-r"></div><div class="tw-dot d-y"></div><div class="tw-dot d-g"></div></div>
+        <div class="tw-title">skill_matrix.db</div>
+      </div>
+      <table class="skills-table">
+        <thead>
+          <tr>
+            <th style="width:180px;text-align:left;font-size:.68rem;letter-spacing:.1em;color:var(--whtd);font-family:'Share Tech Mono',monospace;border-color:var(--m)">CATEGORY</th>
+            <th style="border-color:var(--m)">TECHNOLOGIES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-c">
+            <th class="cat-col">FRONTEND</th>
+            <td><span class="tag">React.js</span><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">Tailwind CSS</span><span class="tag">HTML</span><span class="tag">CSS</span></td>
+          </tr>
+          <tr class="row-m">
+            <th class="cat-col" style="color:var(--mb)">BACKEND</th>
+            <td>
+              <span class="tag" style="color:var(--mb)">Node.js</span>
+              <span class="tag" style="color:var(--mb)">Express.js</span>
+              <span class="tag" style="color:var(--mb)">Python</span>
+              <span class="tag" style="color:var(--mb)">Flask</span>
+              <span class="tag" style="color:var(--mb)">REST APIs</span>
+              <span class="tag" style="color:var(--mb)">Socket.io</span>
+            </td>
+          </tr>
+          <tr class="row-c">
+            <th class="cat-col">DATABASE / CLOUD</th>
+            <td><span class="tag">Firebase</span><span class="tag">Firestore</span><span class="tag">MongoDB</span><span class="tag">PostgreSQL</span><span class="tag">JWT Auth</span><span class="tag">Bcrypt</span></td>
+          </tr>
+          <tr class="row-y">
+            <th class="cat-col" style="color:var(--y)">AI / ML / CV</th>
+            <td>
+              <span class="tag" style="color:var(--y)">Computer Vision</span>
+              <span class="tag" style="color:var(--y)">Face Recognition</span>
+              <span class="tag" style="color:var(--y)">Chatbot NLP</span>
+              <span class="tag" style="color:var(--y)">Python ML</span>
+              <span class="tag" style="color:var(--y)">Jupyter</span>
+            </td>
+          </tr>
+          <tr class="row-m">
+            <th class="cat-col" style="color:var(--mb)">TOOLS / OTHER</th>
+            <td>
+              <span class="tag" style="color:var(--mb)">Git</span>
+              <span class="tag" style="color:var(--mb)">GitHub</span>
+              <span class="tag" style="color:var(--mb)">VS Code</span>
+              <span class="tag" style="color:var(--mb)">Axios</span>
+              <span class="tag" style="color:var(--mb)">Redux</span>
+              <span class="tag" style="color:var(--mb)">Context API</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PROJECTS ─────────────────────────────────────────── -->
+<div class="sec-wrap" id="projects">
+  <div class="sec-inner">
+    <div class="sec-head rev">
+      <div class="sec-cmd"><span class="ps">❯</span> ls -la ./projects/ --sort=relevance --color=always</div>
+      <div class="sec-title y">// PROJECT_LOG</div>
+      <div class="sec-rule">──────────────────────────────────────────────────────────────────────────────</div>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- 01 HIREREADY — featured -->
+      <div class="proj-tw feat span2 rev">
+        <div class="proj-bar">
+          <div class="proj-num">PID_001</div>
+          <div class="proj-name">HIREREADY.exe</div>
+          <div class="proj-badge badge-m">★ FEATURED</div>
+        </div>
+        <div class="proj-body">
+          <div class="feat-body-grid">
+            <div style="display:flex;flex-direction:column">
+              <div class="proj-desc">
+                Interview-prep platform with AI-powered mock interviews. Schedule sessions by technology, role &amp; difficulty. Real-time status tracking, Firebase auth, and Flask AI question-generation backend.
+              </div>
+              <div class="proj-stat">STATUS: <span class="pbar-fill-m">▓▓▓▓▓▓▓▓▓▓▓▓</span><span class="pbar-ok"> COMPLETE</span></div>
+              <div class="proj-stack">
+                <div class="proj-stack-hd">// STACK:</div>
+                <span class="tag" style="color:var(--mb)">Next.js</span>
+                <span class="tag" style="color:var(--mb)">TypeScript</span>
+                <span class="tag" style="color:var(--mb)">Python</span>
+                <span class="tag" style="color:var(--mb)">Flask</span>
+                <span class="tag" style="color:var(--mb)">Firebase</span>
+                <span class="tag" style="color:var(--mb)">Tailwind</span>
+              </div>
+              <div class="proj-links">
+                <a href="https://github.com/Harshhadiya2004/HireReady" target="_blank" class="plink plink-m">git clone</a>
+              </div>
+            </div>
+            <div class="proj-visual">
+              <div class="pl" style="margin-bottom:8px"><span class="ps">❯</span><span class="pc">./hireready --status</span></div>
+              <div class="pv-line"><span class="pv-k">TECH_TRACKS</span><span class="pv-vc">JS / Python</span></div>
+              <div class="pv-line"><span class="pv-k">AI_BACKEND</span><span class="pv-vg">● Flask ACTIVE</span></div>
+              <div class="pv-line"><span class="pv-k">AUTH</span><span class="pv-vg">● Firebase</span></div>
+              <div class="pv-line"><span class="pv-k">DIFFICULTY</span><span class="pv-vm">Easy/Med/Hard</span></div>
+              <div class="pv-line"><span class="pv-k">UI</span><span class="pv-vc">Responsive ✓</span></div>
+              <div class="pv-line"><span class="pv-k">STATUS</span><span class="pv-vg">● COMPLETE</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 SLYCE -->
+      <div class="proj-tw rev d1">
+        <div class="proj-bar">
+          <div class="proj-num">PID_002</div>
+          <div class="proj-name">SLYCE.exe</div>
+          <div class="proj-badge badge-c">CHATBOT</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-desc">Intelligent chatbot service with NLP capabilities. Handles multi-turn conversations, intent recognition, and automated responses. Full-stack deployable chatbot platform.</div>
+          <div class="proj-stat">STATUS: <span class="pbar-fill-c">▓▓▓▓▓▓▓▓▓▓▓▓</span><span class="pbar-ok"> COMPLETE</span></div>
+          <div class="proj-stack">
+            <div class="proj-stack-hd">// STACK:</div>
+            <span class="tag">Python</span><span class="tag">NLP</span><span class="tag">Node.js</span><span class="tag">JavaScript</span><span class="tag">REST API</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/Harshhadiya2004" target="_blank" class="plink plink-c">git clone</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 FACE RECOGNITION -->
+      <div class="proj-tw rev d2">
+        <div class="proj-bar">
+          <div class="proj-num">PID_003</div>
+          <div class="proj-name">FACE_RECOG.py</div>
+          <div class="proj-badge badge-y">CV / ML</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-desc">Computer vision service for real-time face detection and recognition. Trained ML models identify and verify individuals. Deployable as a standalone Python API service.</div>
+          <div class="proj-stat">STATUS: <span class="pbar-fill-c">▓▓▓▓▓▓▓▓▓▓▓▓</span><span class="pbar-ok"> COMPLETE</span></div>
+          <div class="proj-stack">
+            <div class="proj-stack-hd">// STACK:</div>
+            <span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">Computer Vision</span><span class="tag">ML</span><span class="tag">Jupyter</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/Harshhadiya2004/EMOFACE" target="_blank" class="plink plink-c">git clone</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 CAMPUSLINK -->
+      <div class="proj-tw span2 rev">
+        <div class="proj-bar">
+          <div class="proj-num">PID_004</div>
+          <div class="proj-name">CAMPUSLINK.js</div>
+          <div class="proj-badge badge-c">FULLSTACK</div>
+        </div>
+        <div class="proj-body">
+          <div class="feat-body-grid">
+            <div style="display:flex;flex-direction:column">
+              <div class="proj-desc">Campus social platform connecting students. Dedicated frontend client + backend server — social interactions, events, and campus resource management.</div>
+              <div class="proj-stat">STATUS: <span class="pbar-fill-c">▓▓▓▓▓▓▓▓▓▓▓▓</span><span class="pbar-ok"> COMPLETE</span></div>
+              <div class="proj-stack">
+                <div class="proj-stack-hd">// STACK:</div>
+                <span class="tag">JavaScript</span><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">REST API</span><span class="tag">CSS</span>
+              </div>
+              <div class="proj-links">
+                <a href="https://github.com/Harshhadiya2004/CampusLink" target="_blank" class="plink plink-c">client</a>
+                <a href="https://github.com/Harshhadiya2004/CamousLink_Server" target="_blank" class="plink plink-c">server</a>
+              </div>
+            </div>
+            <div class="proj-visual">
+              <div class="pl" style="margin-bottom:8px"><span class="ps">❯</span><span class="pc">./campuslink --status</span></div>
+              <div class="pv-line"><span class="pv-k">ARCH</span><span class="pv-vc">Client + Server</span></div>
+              <div class="pv-line"><span class="pv-k">BACKEND</span><span class="pv-vg">● Node / Express</span></div>
+              <div class="pv-line"><span class="pv-k">API</span><span class="pv-vc">RESTful ✓</span></div>
+              <div class="pv-line"><span class="pv-k">TARGET</span><span class="pv-vm">Students</span></div>
+              <div class="pv-line"><span class="pv-k">STATUS</span><span class="pv-vg">● COMPLETE</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:right;margin-top:14px" class="rev">
+      <a href="https://github.com/Harshhadiya2004" target="_blank" class="btn">LS ALL REPOS →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONTACT ──────────────────────────────────────────── -->
+<div class="sec-wrap alt" id="contact">
+  <div class="sec-inner">
+    <div class="sec-head rev">
+      <div class="sec-cmd"><span class="ps">❯</span> ping harsh_hadiya --establish-connection --verbose</div>
+      <div class="sec-title c">// OPEN_CHANNEL</div>
+      <div class="sec-rule">──────────────────────────────────────────────────────────────────────────────</div>
+    </div>
+
+    <div class="contact-inner">
+      <div class="tw tw-mag rev">
+        <div class="tw-bar">
+          <div class="tw-dots"><div class="tw-dot d-r"></div><div class="tw-dot d-y"></div><div class="tw-dot d-g"></div></div>
+          <div class="tw-title">network_terminal -- ESTABLISH_CONNECTION</div>
+        </div>
+        <div class="contact-body">
+          <div class="ping-out">
+            <div class="pl"><span class="ps">❯</span><span class="pc">ping harshhadiya4@gmail.com --ttl=∞</span></div>
+            <br/>
+            <div>PING <span style="color:var(--cb);text-shadow:0 0 5px var(--c)">harshhadiya4@gmail.com</span></div>
+            <div>HOST .............. <span class="pg">ONLINE ●</span></div>
+            <div>RESPONSE_TIME ..... <span style="color:var(--c)">&lt; 24 hrs</span></div>
+            <div>PACKET_LOSS ....... <span class="pg">0%</span></div>
+            <div>HIRE_STATUS ....... <span style="color:var(--mb);text-shadow:0 0 4px var(--m)">OPEN ●</span></div>
+            <br/>
+            <div class="pl"><span class="ps">❯</span><span class="pc">cat open_to.txt</span></div>
+            <br/>
+            <div style="padding-left:14px;border-left:2px solid var(--cd);margin:6px 0;color:var(--whtd)">
+              <div>» <span style="color:var(--c)">Fresher Roles</span></div>
+              <div>» <span style="color:var(--mb)">Freelance Projects</span></div>
+              <div>» <span style="color:var(--y)">Open-source Collaboration</span></div>
+              <div>» <span style="color:var(--c)">Interesting Builds</span></div>
+            </div>
+            <br/>
+            <div class="pl"><span class="ps">❯</span><span class="pc">select_channel --connect <span class="cur-t">█</span></span></div>
+          </div>
+          <div class="ping-sep">──────────────────────────────────────────────────────────────────────────</div>
+          <div class="contact-btns">
+            <a href="mailto:harshhadiya4@gmail.com" class="btn btn-primary">SEND EMAIL</a>
+            <a href="https://github.com/Harshhadiya2004" target="_blank" class="btn">GITHUB</a>
+            <a href="https://in.linkedin.com/in/harsh-hadiya-4a358a270" target="_blank" class="btn btn-m">LINKEDIN</a>
+            <a href="https://leetcode.com/u/22it035/" target="_blank" class="btn">LEETCODE</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ───────────────────────────────────────────── -->
+<footer>
+  <div><span class="foot-p">harsh@portfolio:~$</span> <span style="color:var(--whtd)">echo "© 2025 Harsh Hadiya"</span> <span class="cur-t">█</span></div>
+  <div class="footer-links">
+    <a href="https://github.com/Harshhadiya2004" target="_blank">./GITHUB</a>
+    <a href="https://in.linkedin.com/in/harsh-hadiya-4a358a270" target="_blank">./LINKEDIN</a>
+    <a href="https://leetcode.com/u/22it035/" target="_blank">./LEETCODE</a>
+  </div>
+</footer>
+
+<script>
+/* cursor */
+(function(){
+  const c=document.getElementById('cur');
+  if(!c)return;
+  document.addEventListener('mousemove',e=>{c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'});
+  document.querySelectorAll('a,button,.btn').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{c.style.width='12px';c.style.height='12px';c.style.borderRadius='50%'});
+    el.addEventListener('mouseleave',()=>{c.style.width='2px';c.style.height='18px';c.style.borderRadius='0'});
+  });
+})();
+
+/* boot */
+(function(){
+  const seq=[['b0',0],['b1',100],['b2',200],['b3',300],['b4',440],['b5',580],['b6',700],['b7',820],['b8',940],['b9',1040],['b10',1160]];
+  seq.forEach(([id,d])=>{
+    const el=document.getElementById(id);
+    if(el) setTimeout(()=>el.classList.add('show'),d);
+  });
+  setTimeout(()=>{
+    const b=document.getElementById('boot');
+    if(b) b.classList.add('done');
+  },2000);
+})();
+
+/* mobile menu */
+const ham=document.getElementById('ham'),mob=document.getElementById('mob');
+ham.addEventListener('click',()=>{
+  ham.classList.toggle('open');mob.classList.toggle('open');
+  document.body.style.overflow=mob.classList.contains('open')?'hidden':'';
+});
+function closeMob(){
+  ham.classList.remove('open');mob.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* clock */
+function tick(){
+  const el=document.getElementById('clock');
+  if(!el)return;
+  const n=new Date(),p=v=>String(v).padStart(2,'0');
+  el.textContent=p(n.getHours())+':'+p(n.getMinutes())+':'+p(n.getSeconds());
+}
+tick();setInterval(tick,1000);
+
+/* scroll reveal */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),i*60)});
+},{threshold:.08});
+document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
